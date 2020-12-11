@@ -1,7 +1,7 @@
 import { writable } from 'svelte/store';
 import { tweened } from 'svelte/motion'
 import { quintOut, linear } from 'svelte/easing';
-export const ready = writable ([false,false,false,false]);
+export const ready = writable ([false,false,false,false, false]);
 export const rotation = writable(0);
 export const currentStory = writable( { stage : 'stageOne', refresh : false } )
 export const scrollDelta = tweened(0, {	

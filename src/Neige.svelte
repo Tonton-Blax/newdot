@@ -14,7 +14,7 @@
   const F_MAX_SIZE = 64
   const F_MIN_SIZE = 1
   let F_AMOUNT = {
-    'stageOne' : 10,
+    'stageOne' : innerWidth > 1024 ? 10 : 2,
     'stageTwo' : 0
   }
   const F_COLOR = 0xffffff
@@ -25,8 +25,8 @@
   const MAX_SIZE = 30
   const MIN_SIZE = 1
   let AMOUNT = {
-    'stageOne' : 850,
-    'stageTwo' : 200
+    'stageOne' : innerWidth > 1024 ? 850 : 250,
+    'stageTwo' : innerWidth > 1024 ? 250 : 125
   }
   const COLOR = 0xffffff
   const SIZES = innerWidth < 2000 ? [2,2,2,2,2,2,2,3,3,3,3,5,5,8,8,10,12,14,18,20] : [4,4,4,4,4,4,4,6,6,6,6,10,10,16,16,20,24,28,36,40]
@@ -146,7 +146,7 @@
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 const starTexture = PIXI.Texture.from('../flare_2.png');
-const starAmount = 350;
+const starAmount = innerWidth > 1024 ? 350 : 150
 let cameraZ = 5;
 const fov = 20;
 const baseSpeed = 0.025;
@@ -293,20 +293,18 @@ function randomizeStar(star, initial) {
       height:100vh;
       overflow:hidden;
       max-width:100vw;
-      touch-action: none;
       background:transparent;
     }
 
   @media screen and (max-width: 1024px) {
     .custom {
-      max-width: unset!important;
+      max-width: fill-available;
       height:min-content;
     }
     :global(canvas) {
       color : #d19017;
       max-height: unset!important;
       max-width: unset!important;
-      touch-action: none;
     }
   }
 
