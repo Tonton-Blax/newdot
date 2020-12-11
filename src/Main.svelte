@@ -73,10 +73,6 @@
     });
   }
 
-  const onload = (node) => {
-    console.log('on load');
-  }
-
   //$: $ready[2] = scrollReset && cloudAnim.progress < 10
 
   let scaleFactor = closest( innerWidth / 1920,  [0.7, 1, 1.5, 2, 4]);
@@ -93,13 +89,11 @@
 		scroll.isScrolling = setTimeout(function() {
       $ready[1] = true;
       $scrollDelta = scrollDeltaBrut = 0;
-      scroller.style.marginTop = openCanvas ? '85vh' : '70vh';
-    }, 100);
+    }, 500);
 
     $ready[5] = cloudAnim.progress > 90;
 
     cloudAnim.seek(cloudAnim.duration * (Y/9000) + animAjust);
-    await tick;
   }
 
   onMount(async () => {
@@ -192,7 +186,7 @@
 
 <Grain >
 
-  <div class="scroller" bind:this={scroller} >
+  <div class="scroller" bind:this={scroller} class:higher={!openCanvas}>
   {#if $ready[1]}
     <img class:reverse={$ready[5]}
       width="{32 * scaleFactor}px" in:fade={{duration:1000}} out:fade={{duration:300}} src="../scroller.svg" alt="pingouin">
@@ -202,7 +196,7 @@
 
   <div class="box" style="margin-top:0;">
     
-    <div class="sigle" bind:this={sigleContainer} style="transform: scale({window.innerWidth >= 700 ? '0.55' : '0.35'})">
+    <div class="sigle" bind:this={sigleContainer} style="transform: scale({!isMobile? '0.55' : '0.35'})">
       <Sigle />
     </div>
     
@@ -306,7 +300,8 @@
     background: radial-gradient(ellipse at center, #814e12, black);
     height:100%;
     opacity:1;
-    min-width:100vw;
+    min-width:100%;
+    will-change: scroll-position;
     /* transition: background-color 2s ease-out; */
     z-index: -10;
   }
@@ -327,31 +322,31 @@
 
 .barrehaut, .barrebas {
   position: fixed;
-  width: 100vw;
-  height: 15vh;
+  width: 100%;
+  height: 150px;
   background: black!important;
   will-change:transform;
   left: 0px;
   z-index: 21;
   transform: translateY(0%);
   opacity:1;
-  transition: all 3s ease-out;
+  transition: all 2s ease-out;
 }
 
 .barrehaut {
-  top: 0vh;
+  top: 0px;
 }
 .barrebas {
-  bottom:0vh;
+  bottom:0px;
 }
 
 .jeanpierre {
-  transform: translateY(-25vh);
+  transform: translateY(-150px);
   /* clip-path: polygon(100% 0, 0 0, 0 100%, 100% 100%, 100% 100%, 0 100%, 0 0%, 100% 0%); */
 }
 
 .jeanmarc {
-  transform: translateY(25vh);
+  transform: translateY(150px);
 }
 
 .box {
@@ -395,11 +390,14 @@ h1 {
   display: flex;
   flex-direction: column;
   z-index: 150;
-  width: 100vw;
-  margin-top: 70vh;
+  width: 100%;
   justify-content:center;
   align-items: center;
   opacity:0.65;
+  bottom:70px;
+}
+.higher {
+  bottom:165px;
 }
 .scroller > h3 {
   color:white;
@@ -414,9 +412,9 @@ section {
   transform: translate(-50%, -50%);
   left: 50%;
   top: 50%;
-  width: 100vw;
-  max-height: 100vh;
-  height:100vh;
+  width: 100%;
+  max-height: max-content;
+  height:100%;
   overflow:hidden;
   transition: all 2s ease-out;
   z-index:20;
@@ -441,7 +439,7 @@ section:after {
   right: 0;
   top: 0;
   perspective: 500px;
-  height:100vh;
+  height:100%;
 }
 #world {
   height: 1024px;
@@ -526,17 +524,24 @@ section:after {
   position: absolute;
 }
 :global(body) {
-  width: 100vw;
-  height: 1000vh;
+  width: 100%;
+  height: 750rem;
   margin: 0!important;
   padding: 0!important;
-  scroll-behavior: smooth;
+  overscroll-behavior : none;
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
+}
+
+:global(html) {
+  background-color: #814e12;
+  background: radial-gradient(ellipse at center, #814e12, black);
 }
 
 
 @media screen and (min-width: 2500px) {
   :global(body) {
-    height:700vh!important;
+    height:1000rem!important;
   }
   .box {
     transform: translate(-50%, -50%) scale(1.5);
@@ -548,9 +553,21 @@ section:after {
 }
 
 @media screen and (max-width: 1024px) {
+  .barrehaut, .barrebas {
+    height:90px;
+  }
+  .jeanpierre {
+    transform: translateY(-90px);
+  }
+
+  .jeanmarc {
+    transform: translateY(90px);
+  }
+
+
   :global(body) {
     min-width:min-content;
-    height:1200vh;
+    height:600rem;
   }
 
   section {
@@ -580,7 +597,13 @@ section:after {
   }
   .scroller{
     width:100%;
-    margin-top:87vh;
+    bottom:45px;
+  }
+  .higher {
+    bottom:110px;
+  }
+  .sigle {
+    margin-bottom: 6rem;
   }
 }
 

@@ -13,7 +13,7 @@
 </script>
 {#if !fire}
 <div class="supercontainer" transition:fade>
-  <Loader color={'#fff'} size={250}/>
+  <Loader color={'#fff'} size={64}/>
 </div>
 {/if}
 <Main on:readygo={() => fire = true} />
